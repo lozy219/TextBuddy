@@ -1,9 +1,11 @@
 package textbuddy;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -63,38 +65,66 @@ public class TextBuddy {
 		}
 	}
 	
-	private void readAndProcessCommand() {
-		String command = this.readCommand();
-		this.processCommand(command);
+	private void readAndProcessCommand() throws IOException {
+		try {
+			String command = this.readCommand();
+			this.processCommand(command);
+		} catch (IOException e) {
+			
+		}
 	}
 
-	private void processCommand(String command) {
+	private void processCommand(String command) throws IOException {
 		String commandName = getFirstWord(command);
 		String commandArgument = getRestCommand(command);
 		
 		if (commandName == null) {
 			throw new Error("command type string cannot be null!");
 		}
-		
-		if (commandName.equalsIgnoreCase("add")) {
-			this.addTask(commandArgument);
-		} else if (commandName.equalsIgnoreCase("display")) {
-			this.displayTask();
-		} else if (commandName.equalsIgnoreCase("delete")) {
-		 	this.deleteTask(commandArgument);
-		} else if (commandName.equalsIgnoreCase("clear")) {
-			this.clearTask();
-		} else if (commandName.equalsIgnoreCase("exit")) {
-			this.exitTextBuddy();
-		} else {
-			throw new Error("invalid command type");
+		try {
+			if (commandName.equalsIgnoreCase("add")) {
+				this.addTask(commandArgument);
+			} else if (commandName.equalsIgnoreCase("display")) {
+				this.displayTask();
+			} else if (commandName.equalsIgnoreCase("delete")) {
+			 	this.deleteTask(commandArgument);
+			} else if (commandName.equalsIgnoreCase("clear")) {
+				this.clearTask();
+			} else if (commandName.equalsIgnoreCase("exit")) {
+				this.exitTextBuddy();
+			} else {
+				throw new Error("invalid command type");
+			}
+		} catch (IOException e) {
+			
 		}
 		
 	}
 	
 
-	private void exitTextBuddy() {
-		// TODO Auto-generated method stub
+	private void exitTextBuddy() throws IOException {
+		try {
+			this.save();
+		} catch (IOException e) {
+			
+		} finally {
+			System.exit(0);
+		}
+	}
+
+	private void save() throws IOException {
+		try {
+			FileWriter out = new FileWriter(this.TextBuddyFile, false);
+			BufferedWriter bw = new BufferedWriter(out);
+			for (String task : todoList) {
+				bw.write(task);
+				bw.newLine();
+			}
+			bw.flush();
+			bw.close();
+		} catch (IOException e) {
+			
+		}
 		
 	}
 
@@ -130,7 +160,7 @@ public class TextBuddy {
 	
 	private String getRestCommand(String command) {
 		String[] commandArray = command.split(" ", 2);
-		if (commandArray.length() > 1) {
+		if (commandArray.length > 1) {
 			return commandArray[1];
 		} else {
 			return null;
