@@ -122,6 +122,10 @@ public class TextBuddy {
 			}
 			bw.flush();
 			bw.close();
+			
+			// reload the task list
+			this.TextBuddyFile = new File(this.TextBuddyFile.getAbsolutePath());
+			this.readTaskFromFile();
 		} catch (IOException e) {
 			
 		}
@@ -129,23 +133,48 @@ public class TextBuddy {
 	}
 
 	private void clearTask() {
-		// TODO Auto-generated method stub
+		
+		try {
+			this.save();
+		} catch (IOException e) {
+			
+		}
 		
 	}
 
-	private void deleteTask(String commandArgument) {
-		// TODO Auto-generated method stub
+	private void deleteTask(String taskNumberArgument) {
+		int taskNumber = Integer.parseInt(taskNumberArgument);
+		if ((taskNumber < 0) || (taskNumber > this.todoList.size())) {
+			this.show("invalid task number");
+		} else {
+			this.todoList.remove(taskNumber - 1);
+		}
+		
+		try {
+			this.save();
+		} catch (IOException e) {
+			
+		}
 		
 	}
 
 	private void displayTask() {
-		// TODO Auto-generated method stub
-		
+		if (this.todoList.size() == 0) {
+			this.show("mytextfile.txt is empty");
+		} else {
+			for (int i = 0; i < this.todoList.size(); i++) {
+				this.show(i + 1 + ":" + this.todoList.get(i));
+			}
+		}
 	}
 
-	private void addTask(String commandArgument) {
-		// TODO Auto-generated method stub
-		
+	private void addTask(String task) {
+		this.todoList.add(task);
+		try {
+			this.save();
+		} catch (IOException e) {
+			
+		}
 	}
 
 	private String readCommand() {
