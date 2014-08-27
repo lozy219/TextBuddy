@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,7 +16,7 @@ import java.util.Scanner;
 public class TextBuddy {
 	
 	private File TextBuddyFile;
-	private ArrayList<String> todoList;
+	private ArrayList<String> todoList = new ArrayList<String>();
 	private static Scanner scanner = new Scanner(System.in);
 	
 	
@@ -26,7 +28,8 @@ public class TextBuddy {
 	public TextBuddy(String filePath) throws IOException {
 		this.TextBuddyFile = new File(filePath);
 		if (!this.TextBuddyFile.exists()) {
-			throw new IOException("invalid file path");
+			//throw new IOException("invalid file path");
+			this.createFile(filePath);
 		} else {
 			try {
 				this.readTaskFromFile();
@@ -36,6 +39,11 @@ public class TextBuddy {
 		}
 	}
 	
+	private void createFile(String filePath) throws FileNotFoundException, UnsupportedEncodingException {
+		PrintWriter writer = new PrintWriter(filePath, "UTF-8");
+		writer.close();
+	}
+
 	/**
 	 * 
 	 * @param args
@@ -54,12 +62,15 @@ public class TextBuddy {
 	public static void main(String[] args) {
 		
 		try {
-			TextBuddy textBuddy = new TextBuddy(args[1]);
+			TextBuddy textBuddy = new TextBuddy(args[0]);
 			textBuddy.showWelcome();
 			while (true) {
 				textBuddy.showPrompt();
 				textBuddy.readAndProcessCommand();
 			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			show("Invalid file path");
+			System.exit(1);
 		} catch (IOException e) {
 			
 		}
@@ -133,6 +144,7 @@ public class TextBuddy {
 	}
 
 	private void clearTask() {
+		this.todoList.clear();
 		
 		try {
 			this.save();
@@ -145,7 +157,7 @@ public class TextBuddy {
 	private void deleteTask(String taskNumberArgument) {
 		int taskNumber = Integer.parseInt(taskNumberArgument);
 		if ((taskNumber < 0) || (taskNumber > this.todoList.size())) {
-			this.show("invalid task number");
+			show("invalid task number");
 		} else {
 			this.todoList.remove(taskNumber - 1);
 		}
@@ -160,10 +172,10 @@ public class TextBuddy {
 
 	private void displayTask() {
 		if (this.todoList.size() == 0) {
-			this.show("mytextfile.txt is empty");
+			show("mytextfile.txt is empty");
 		} else {
 			for (int i = 0; i < this.todoList.size(); i++) {
-				this.show(i + 1 + ":" + this.todoList.get(i));
+				show(i + 1 + ":" + this.todoList.get(i));
 			}
 		}
 	}
@@ -172,6 +184,7 @@ public class TextBuddy {
 		this.todoList.add(task);
 		try {
 			this.save();
+			show("added to mytextfile.txt: \"" + task + "\"");
 		} catch (IOException e) {
 			
 		}
@@ -196,15 +209,15 @@ public class TextBuddy {
 		}
 	}
 
-	private void show(String message) {
+	private static void show(String message) {
 		System.out.println(message);
 	}
 
 	private void showPrompt() {
-		this.show("command: ");
+		show("command: ");
 	}
 
 	private void showWelcome() {
-		this.show("Welcome to TextBuddy. mytextfile.txt is ready for use"); // string format TODO
+		show("Welcome to TextBuddy. mytextfile.txt is ready for use"); // string format TODO
 	}
 }
