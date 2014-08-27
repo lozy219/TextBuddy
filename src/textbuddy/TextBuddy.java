@@ -53,6 +53,7 @@ public class TextBuddy {
 		String line;
 		FileReader in = new FileReader(this.TextBuddyFile);
 		BufferedReader br = new BufferedReader(in);
+		this.todoList.clear();
 		while ((line = br.readLine()) != null) {
 			this.todoList.add(line);
 		}
@@ -156,7 +157,7 @@ public class TextBuddy {
 
 	private void deleteTask(String taskNumberArgument) {
 		int taskNumber = Integer.parseInt(taskNumberArgument);
-		if ((taskNumber < 0) || (taskNumber > this.todoList.size())) {
+		if ((taskNumber <= 0) || (taskNumber > this.todoList.size())) {
 			show("invalid task number");
 		} else {
 			this.todoList.remove(taskNumber - 1);
