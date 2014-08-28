@@ -41,10 +41,11 @@ public class TextBuddy {
 	
 	// declaration of the constant for displayed messages and errors
 	private static final String WELCOME_MESSAGE = "Welcome to TextBuddy. %1$s is ready for use";
-	private static final String PROMPT_MESSAGE = "command:";
+	private static final String PROMPT_MESSAGE = "command: ";
 	private static final String ADD_TASK_MESSAGE = "added to %1$s: \"%2$s\"";
 	private static final String DELETE_TASK_MESSAGE = "deleted from %1$s: \"%2$s\"";
 	private static final String EMPTY_FILE_MESSAGE = "%1$s is empty";
+	private static final String CLEAR_TASK_MESSAGE = "all content deleted from %1$s";
 	private static final String INVALID_TASK_NO_MESSAGE = "Invalid task number: %1$d";
 	private static final String INVALID_COMMAND_ERROR = "Invalid command type: %1$s";
 	private static final String NULL_COMMAND_ERROR = "Command type string cannot be null";
@@ -302,6 +303,7 @@ public class TextBuddy {
 	private void clearTask() {
 		
 		this.todoList.clear();
+		show(String.format(CLEAR_TASK_MESSAGE, this.TextBuddyFile.getName()));
 		try {
 			this.save();
 		} catch (IOException e) {
