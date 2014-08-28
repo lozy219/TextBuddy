@@ -215,7 +215,11 @@ public class TextBuddy {
 	}
 
 	private void showPrompt() {
-		show("command: ");
+		showWithoutLineBreak("command: ");
+	}
+
+	private void showWithoutLineBreak(String message) {
+		System.out.print(message);
 	}
 
 	private void showWelcome() {
