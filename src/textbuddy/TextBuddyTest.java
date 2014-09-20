@@ -12,13 +12,13 @@ public class TextBuddyTest  {
 	public void testSort() {
 		
 		testOneCommand("clear", "All content deleted from file.txt", "clear");
-		testOneCommand("add", "Added to file.txt: \"Learn Xanedu\"", "add Learn Xanedu");
-		testOneCommand("add", "Added to file.txt: \"Learn Java\"", "add Learn Java");
-		testOneCommand("add", "Added to file.txt: \"Learn Javascript\"", "add Learn Javascript");
-		testOneCommand("add", "Added to file.txt: \"1-hour practice\"", "add 1-hour practice");
-		testOneCommand("display", "1:Learn Xanedu2:Learn Java3:Learn Javascript4:1-hour practice", "display");
+		testOneCommand("add xanedu", "Added to file.txt: \"Learn Xanedu\"", "add Learn Xanedu");
+		testOneCommand("add java", "Added to file.txt: \"Learn Java\"", "add Learn Java");
+		testOneCommand("add js", "Added to file.txt: \"Learn Javascript\"", "add Learn Javascript");
+		testOneCommand("add 1 hour", "Added to file.txt: \"1-hour practice\"", "add 1-hour practice");
+		testOneCommand("display non-sorted", "1:Learn Xanedu2:Learn Java3:Learn Javascript4:1-hour practice", "display");
 		testOneCommand("sort", "Sorting completed", "sort");
-		testOneCommand("display", "1:Learn Java2:Learn Javascript3:Learn Xanedu4:1-hour practice", "display");
+		testOneCommand("display sorted", "1:1-hour practice2:Learn Java3:Learn Javascript4:Learn Xanedu", "display");
 		testOneCommand("clear", "All content deleted from file.txt", "clear");
 		
 	}
@@ -27,13 +27,13 @@ public class TextBuddyTest  {
 	public void testSearch() {
 		
 		testOneCommand("clear", "All content deleted from file.txt", "clear");
-		testOneCommand("add", "Added to file.txt: \"Learn Xanedu\"", "add Learn Xanedu");
-		testOneCommand("add", "Added to file.txt: \"Learn Java\"", "add Learn Java");
-		testOneCommand("add", "Added to file.txt: \"Learn Javascript\"", "add Learn Javascript");
-		testOneCommand("add", "Added to file.txt: \"1-hour practice\"", "add 1-hour practice");
+		testOneCommand("add xanedu", "Added to file.txt: \"Learn Xanedu\"", "add Learn Xanedu");
+		testOneCommand("add java", "Added to file.txt: \"Learn Java\"", "add Learn Java");
+		testOneCommand("add js", "Added to file.txt: \"Learn Javascript\"", "add Learn Javascript");
+		testOneCommand("add 1 hour", "Added to file.txt: \"1-hour practice\"", "add 1-hour practice");
 		testOneCommand("display", "1:Learn Xanedu2:Learn Java3:Learn Javascript4:1-hour practice", "display");
-		testOneCommand("search", "1:Learn Xanedu2:Learn Java3:Learn Javascript", "search Learn");
-		testOneCommand("search", "1:Learn Java2:Learn Javascript", "search Java");
+		testOneCommand("search learn", "1:Learn Xanedu2:Learn Java3:Learn Javascript", "search Learn");
+		testOneCommand("search java", "2:Learn Java3:Learn Javascript", "search java");
 		testOneCommand("search for non-existing task", "No result found", "search acciaccatura");
 		testOneCommand("clear", "All content deleted from file.txt", "clear");
 		
