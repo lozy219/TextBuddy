@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 
@@ -23,6 +24,8 @@ import java.util.Scanner;
  * display: command display will show all the tasks stored in the file, and the tasks is ranked
  * by the creating date; the tasks will be numbered from 1 onwards;
  * delete [taskNumber]: command delete is used to remove the task from the list;
+ * search [keyword]: command search will display all the task containing the keywords, note that the
+ * keyword is not necessarily a word, it could also be part of the word
  * clear: command clear will delete every tasks from the list;
  * exit: command exit is used when the use want to quit the program.
  * 
@@ -32,7 +35,7 @@ import java.util.Scanner;
  * 
  * Notice: when testing, use java TextBuddy file.txt <testinput.txt >output.txt
  * 
- * @author leimingyu
+ * @author Lei Mingyu
  *
  */
 public class TextBuddy {
@@ -43,15 +46,17 @@ public class TextBuddy {
 	
 	// declaration of the constant for displayed messages and errors
 	private static final String WELCOME_MESSAGE = "Welcome to TextBuddy. %1$s is ready for use";
-	private static final String PROMPT_MESSAGE = "command: ";
-	private static final String ADD_TASK_MESSAGE = "added to %1$s: \"%2$s\"";
-	private static final String DELETE_TASK_MESSAGE = "deleted from %1$s: \"%2$s\"";
+	private static final String PROMPT_MESSAGE = "Command: ";
+	private static final String ADD_TASK_MESSAGE = "Added to %1$s: \"%2$s\"";
+	private static final String DELETE_TASK_MESSAGE = "Deleted from %1$s: \"%2$s\"";
 	private static final String EMPTY_FILE_MESSAGE = "%1$s is empty";
-	private static final String CLEAR_TASK_MESSAGE = "all content deleted from %1$s";
+	private static final String CLEAR_TASK_MESSAGE = "All content deleted from %1$s";
+	private static final String SORT_TASK_MESSAGE = "Sorting completed";
 	private static final String INVALID_TASK_NO_MESSAGE = "Invalid task number: %1$d";
 	private static final String INVALID_COMMAND_ERROR = "Invalid command type: %1$s";
 	private static final String NULL_COMMAND_ERROR = "Command type string cannot be null";
 	private static final String INVALID_FILE_PATH_ERROR = "Invalid file path";
+	private static final String NO_SEARCH_RESULT_MESSAGE = "No result found";
 
 
 	// These are the possible command types
@@ -221,12 +226,12 @@ public class TextBuddy {
 				
 			case SORT_TASK:
 				// TODO: sort
-				// returnValue = this.clearTask();
+				returnValue = this.sortTask();
 				break;
 				
 			case SEARCH_TASK:
 				// TODO: search
-				// returnValue = this.clearTask();
+				returnValue = this.searchTask(commandArgument);
 				break;
 				
 			case EXIT:
@@ -403,6 +408,40 @@ public class TextBuddy {
 			}
 		}
 		return tasks;
+	}
+	
+	/**
+	 * sortTask
+	 * 
+	 * sort the current task list alphabetically
+	 * @return
+	 */
+	private String sortTask() {
+		Collections.sort(this.todoList);
+		return show(SORT_TASK_MESSAGE);
+	}
+	
+	/**
+	 * searchTask
+	 * 
+	 * @param taskKeyword
+	 * @return
+	 */
+	private String searchTask(String taskKeyword) {
+		String matchedTasks = "";
+		for (int i = 0; i < this.todoList.size(); i++) {
+			String task = this.todoList.get(i);
+			if (task.toLowerCase().contains(taskKeyword.toLowerCase())) {
+				String matchedTask = i + 1 + ":" + task;
+				show(matchedTask);
+				matchedTasks = matchedTasks + matchedTask;
+			}
+		}
+		if (matchedTasks.equalsIgnoreCase("")) {
+			return show(NO_SEARCH_RESULT_MESSAGE);
+		} else {
+			return matchedTasks;
+		}
 	}
 	
 	/**
