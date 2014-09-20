@@ -1,0 +1,11 @@
+Welcome to TextBuddy. file.txt is ready for use
+command: file.txt is empty
+command: added to file.txt: "little brown fox"
+command: added to file.txt: "big brown fox"
+command: 1:little brown fox
+2:big brown fox
+command: deleted from file.txt: "little brown fox"
+command: all content deleted from file.txt
+command: Invalid task number: 5
+command: Invalid command type: sdfasdfsf
+command: 

@@ -11,29 +11,33 @@ public class TextBuddyTest  {
 	TextBuddy testBuddy = new TextBuddy("file.txt");
 	
 	@Test
-	public void testExecuteCommand() {
+	public void testSort() {
 		
 		testOneCommand("clear", "all content deleted from file.txt", "clear");
-		testOneCommand("display empty", "file.txt is empty", "display");
+		testOneCommand("add", "added to file.txt: \"Learn Xanedu\"", "add Learn Xanedu");
+		testOneCommand("add", "added to file.txt: \"Learn Java\"", "add Learn Java");
+		testOneCommand("add", "added to file.txt: \"Learn Javascript\"", "add Learn Javascript");
+		testOneCommand("add", "added to file.txt: \"1-hour practice\"", "add 1-hour practice");
+		testOneCommand("display", "1:Learn Xanedu2:Learn Java3:Learn Javascript4:1-hour practice", "display");
+		testOneCommand("sort", "tasks sorted", "sort");
+		testOneCommand("display", "1:Learn Java2:Learn Javascript3:Learn Xanedu4:1-hour practice", "display");
+		testOneCommand("clear", "all content deleted from file.txt", "clear");
 		
-		testOneCommand("add", "added to file.txt: \"hi\"", "add hi");
-		testOneCommand("delete", "deleted from file.txt: \"hi\"", "delete 1");
+	}
+	
+	@Test
+	public void testSearch() {
+		
 		testOneCommand("clear", "all content deleted from file.txt", "clear");
-		testOneCommand("invalid command", "Invalid command type: sflkhih23fdsa", "sflkhih23fdsa");
-		testOneCommand("delete invalid", "Invalid task number: 28", "delete 28");
-		testOneCommand("search", "No result found", "search achusve");
-		testOneCommand("search", "No searched keyword found", "search");
-		testOneCommand("add", "added to file.txt: \"have a nice recess week\"", "add have a nice recess week");
-		testOneCommand("display", "1:have a nice recess week", "display");
-		testOneCommand("add", "added to file.txt: \"what\"", "add what");
-		testOneCommand("display", "1:have a nice recess week2:what", "display");
+		testOneCommand("add", "added to file.txt: \"Learn Xanedu\"", "add Learn Xanedu");
+		testOneCommand("add", "added to file.txt: \"Learn Java\"", "add Learn Java");
+		testOneCommand("add", "added to file.txt: \"Learn Javascript\"", "add Learn Javascript");
+		testOneCommand("add", "added to file.txt: \"1-hour practice\"", "add 1-hour practice");
+		testOneCommand("display", "1:Learn Xanedu2:Learn Java3:Learn Javascript4:1-hour practice", "display");
+		testOneCommand("sort", "1:Learn Xanedu2:Learn Java3:Learn Javascript", "search Learn");
+		testOneCommand("sort", "1:Learn Java2:Learn Javascript", "search Java");
 		testOneCommand("clear", "all content deleted from file.txt", "clear");
-		testOneCommand("sort", "tasks sorted", "sort");
-		testOneCommand("add", "added to file.txt: \"abc\"", "add abc");
-		testOneCommand("display", "1:have a nice recess week2:what3:abc", "display");
-		testOneCommand("sort", "tasks sorted", "sort");
-		testOneCommand("display", "1:abc2:have a nice recess week3:what", "display");
-		testOneCommand("search", "1:have a nice recess week", "recess");
+		
 	}
 	
 

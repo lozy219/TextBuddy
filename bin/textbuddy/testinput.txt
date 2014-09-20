@@ -1,0 +1,9 @@
+display
+add little brown fox
+add big brown fox
+display
+delete 1
+clear
+delete 5
+sdfasdfsf
+exit
