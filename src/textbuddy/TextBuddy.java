@@ -72,12 +72,14 @@ public class TextBuddy {
 	public TextBuddy(String filePath) {
 		this.TextBuddyFile = new File(filePath);
 		if (!this.TextBuddyFile.exists()) {
+			// if the file does not exist, create one
 			try {
 				this.createFile(filePath);
 			} catch (Exception e) {
-				
+				e.printStackTrace();
 			}
 		} else {
+			// if the file does exist, read from it
 			try {
 				this.readTaskFromFile();
 			} catch (IOException e) {
@@ -418,6 +420,11 @@ public class TextBuddy {
 	 */
 	private String sortTask() {
 		Collections.sort(this.todoList);
+		try {
+			this.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return show(SORT_TASK_MESSAGE);
 	}
 	
