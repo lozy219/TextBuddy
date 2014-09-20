@@ -117,7 +117,8 @@ public class TextBuddy {
 	 * @throws FileNotFoundException
 	 * @throws UnsupportedEncodingException
 	 */
-	private void createFile(String filePath) throws FileNotFoundException, UnsupportedEncodingException {
+	private void createFile(String filePath) throws FileNotFoundException, 
+													UnsupportedEncodingException {
 		PrintWriter writer = new PrintWriter(filePath, "UTF-8");
 		writer.close();
 	}
@@ -202,8 +203,10 @@ public class TextBuddy {
 	 * @throws IOException
 	 */
 	public String processCommand(String command) throws IOException {
-		String commandName = getFirstWord(command); // retrieve command name from the input
-		String commandArgument = getRestCommand(command); // retrieve command argument from the input
+		// retrieve command name from the input
+		String commandName = getFirstWord(command); 
+		// retrieve command argument from the input
+		String commandArgument = getRestCommand(command); 
 		COMMAND_TYPE commandType = TextBuddy.determineCommandType(commandName);
 		String returnValue = null;
 	
