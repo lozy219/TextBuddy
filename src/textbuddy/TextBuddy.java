@@ -201,8 +201,8 @@ public class TextBuddy {
 	 * @throws IOException
 	 */
 	public String processCommand(String command) throws IOException {
-		String commandName = getFirstWord(command);
-		String commandArgument = getRestCommand(command);
+		String commandName = getFirstWord(command); // retrieve command name from the input
+		String commandArgument = getRestCommand(command); // retrieve command argument from the input
 		COMMAND_TYPE commandType = TextBuddy.determineCommandType(commandName);
 		String returnValue = null;
 	
@@ -227,12 +227,10 @@ public class TextBuddy {
 				break;
 				
 			case SORT_TASK:
-				// TODO: sort
 				returnValue = this.sortTask();
 				break;
 				
 			case SEARCH_TASK:
-				// TODO: search
 				returnValue = this.searchTask(commandArgument);
 				break;
 				
