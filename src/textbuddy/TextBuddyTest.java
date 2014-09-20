@@ -33,7 +33,7 @@ public class TextBuddyTest  {
 		testOneCommand("search learn", "1:Learn Xanedu2:Learn Java3:Learn Javascript", "search Learn");
 		testOneCommand("search java", "2:Learn Java3:Learn Javascript", "search java");
 		testOneCommand("search for non-existing task", "No result found", "search acciaccatura");
-		testOneCommand("search for empty keyword", "Please provide the keyword you want to search", "search ");
+		testOneCommand("search for empty keyword", "Please provide the keyword you want to search", "search   ");
 		testOneCommand("clear", "All content deleted from file.txt", "clear");
 		System.out.println("all search tests are passed");
 	}

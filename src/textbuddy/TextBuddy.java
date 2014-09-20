@@ -53,10 +53,11 @@ public class TextBuddy {
 	private static final String CLEAR_TASK_MESSAGE = "All content deleted from %1$s";
 	private static final String SORT_TASK_MESSAGE = "Sorting completed";
 	private static final String INVALID_TASK_NO_MESSAGE = "Invalid task number: %1$d";
+	private static final String NO_SEARCH_RESULT_MESSAGE = "No result found";
 	private static final String INVALID_COMMAND_ERROR = "Invalid command type: %1$s";
 	private static final String NULL_COMMAND_ERROR = "Command type string cannot be null";
 	private static final String INVALID_FILE_PATH_ERROR = "Invalid file path";
-	private static final String NO_SEARCH_RESULT_MESSAGE = "No result found";
+	private static final String NO_KEYWORD_ERROR = "Please provide the keyword you want to search";
 
 
 	// These are the possible command types
@@ -434,6 +435,12 @@ public class TextBuddy {
 	 */
 	private String searchTask(String taskKeyword) {
 		String matchedTasks = "";
+		
+		// if the keyword is empty, display an error message
+		if (taskKeyword.trim().equals("")) {
+			return show(NO_KEYWORD_ERROR);
+		}
+		
 		for (int i = 0; i < this.todoList.size(); i++) {
 			String task = this.todoList.get(i);
 			if (task.toLowerCase().contains(taskKeyword.toLowerCase())) {
@@ -442,7 +449,7 @@ public class TextBuddy {
 				matchedTasks = matchedTasks + matchedTask;
 			}
 		}
-		if (matchedTasks.equalsIgnoreCase("")) {
+		if (matchedTasks.equals("")) {
 			return show(NO_SEARCH_RESULT_MESSAGE);
 		} else {
 			return matchedTasks;
