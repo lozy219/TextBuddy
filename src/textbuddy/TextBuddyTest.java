@@ -10,7 +10,6 @@ public class TextBuddyTest  {
 	
 	@Test
 	public void testSort() {
-		
 		testOneCommand("clear", "All content deleted from file.txt", "clear");
 		testOneCommand("add xanedu", "Added to file.txt: \"Learn Xanedu\"", "add Learn Xanedu");
 		testOneCommand("add java", "Added to file.txt: \"Learn Java\"", "add Learn Java");
@@ -20,12 +19,11 @@ public class TextBuddyTest  {
 		testOneCommand("sort", "Sorting completed", "sort");
 		testOneCommand("display sorted", "1:1-hour practice2:Learn Java3:Learn Javascript4:Learn Xanedu", "display");
 		testOneCommand("clear", "All content deleted from file.txt", "clear");
-		
+		System.out.println("all sort tests are passed");
 	}
 	
 	@Test
 	public void testSearch() {
-		
 		testOneCommand("clear", "All content deleted from file.txt", "clear");
 		testOneCommand("add xanedu", "Added to file.txt: \"Learn Xanedu\"", "add Learn Xanedu");
 		testOneCommand("add java", "Added to file.txt: \"Learn Java\"", "add Learn Java");
@@ -36,7 +34,7 @@ public class TextBuddyTest  {
 		testOneCommand("search java", "2:Learn Java3:Learn Javascript", "search java");
 		testOneCommand("search for non-existing task", "No result found", "search acciaccatura");
 		testOneCommand("clear", "All content deleted from file.txt", "clear");
-		
+		System.out.println("all search tests are passed");
 	}
 	
 
