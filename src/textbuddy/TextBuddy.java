@@ -378,14 +378,17 @@ public class TextBuddy {
 	 * @return 
 	 */
 	private String displayTask() {
+		String tasks = "";
 		if (this.todoList.size() == 0) {
 			return show(String.format(EMPTY_FILE_MESSAGE, this.TextBuddyFile.getName()));
 		} else {
 			for (int i = 0; i < this.todoList.size(); i++) {
-				show(i + 1 + ":" + this.todoList.get(i));
+				String task = i + 1 + ":" + this.todoList.get(i);
+				show(task);
+				tasks = tasks + task;
 			}
 		}
-		return null;
+		return tasks;
 	}
 	
 	/**
