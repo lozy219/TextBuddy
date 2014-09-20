@@ -29,6 +29,7 @@ import java.util.Scanner;
  * any commands not stated above will be considered invalid.
  * the file is saved every time when it is modified.
  * 
+ * Notice: when testing, use java TextBuddy file.txt <testinput.txt >output.txt
  * 
  * @author leimingyu
  *
@@ -57,15 +58,19 @@ public class TextBuddy {
 	 * @param filePath
 	 * @throws IOException 
 	 */
-	public TextBuddy(String filePath) throws IOException {
+	public TextBuddy(String filePath) {
 		this.TextBuddyFile = new File(filePath);
 		if (!this.TextBuddyFile.exists()) {
-			this.createFile(filePath);
+			try {
+				this.createFile(filePath);
+			} catch (Exception e) {
+				
+			}
 		} else {
 			try {
 				this.readTaskFromFile();
 			} catch (IOException e) {
-				
+				e.printStackTrace();
 			}
 		}
 	}
@@ -82,7 +87,7 @@ public class TextBuddy {
 			show(INVALID_FILE_PATH_ERROR);
 			System.exit(1);
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
@@ -141,7 +146,7 @@ public class TextBuddy {
 			this.TextBuddyFile = new File(this.TextBuddyFile.getAbsolutePath());
 			this.readTaskFromFile();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 		
 	}
@@ -160,7 +165,7 @@ public class TextBuddy {
 			String command = this.readCommand();
 			this.processCommand(command);
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
@@ -182,7 +187,7 @@ public class TextBuddy {
 	 * @param command
 	 * @throws IOException
 	 */
-	private void processCommand(String command) throws IOException {
+	public String processCommand(String command) throws IOException {
 		String commandName = getFirstWord(command);
 		String commandArgument = getRestCommand(command);
 		
@@ -192,23 +197,24 @@ public class TextBuddy {
 		
 		try {
 			if (commandName.equalsIgnoreCase("add")) {
-				this.addTask(commandArgument);
+				return this.addTask(commandArgument);
 			} else if (commandName.equalsIgnoreCase("display")) {
-				this.displayTask();
+				return this.displayTask();
 			} else if (commandName.equalsIgnoreCase("delete")) {
 				// TODO: add confirm before deleting the task
-			 	this.deleteTask(commandArgument);
+			 	return this.deleteTask(commandArgument);
 			} else if (commandName.equalsIgnoreCase("clear")) {
 				// TODO: add confirm before clearing the file
-				this.clearTask();
+				return this.clearTask();
 			} else if (commandName.equalsIgnoreCase("exit")) {
-				this.exitTextBuddy();
+				return this.exitTextBuddy();
 			} else {
-				throw new Error(String.format(INVALID_COMMAND_ERROR, commandName));
+				return show(String.format(INVALID_COMMAND_ERROR, commandName));
 			}
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
+		return null;
 		
 	}
 	
@@ -217,9 +223,11 @@ public class TextBuddy {
 	 * 
 	 * print out the message then create a new line
 	 * @param message
+	 * @return 
 	 */
-	private static void show(String message) {
+	private static String show(String message) {
 		System.out.println(message);
+		return message;
 	}
 
 	/**
@@ -259,15 +267,17 @@ public class TextBuddy {
 	 * 
 	 * pushing a new task to the end of todoList then save the file
 	 * @param task
+	 * @return 
 	 */
-	private void addTask(String task) {
+	private String addTask(String task) {
 		this.todoList.add(task);
 		try {
 			this.save();
-			show(String.format(ADD_TASK_MESSAGE, this.TextBuddyFile.getName(), task));
+			return show(String.format(ADD_TASK_MESSAGE, this.TextBuddyFile.getName(), task));
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	/**
@@ -275,40 +285,43 @@ public class TextBuddy {
 	 * 
 	 * delete the task with given number from the list, then save the file
 	 * @param taskNumberArgument
+	 * @return 
 	 */
-	private void deleteTask(String taskNumberArgument) {
+	private String deleteTask(String taskNumberArgument) {
 		int taskNumber = Integer.parseInt(taskNumberArgument);
 		
 		if ((taskNumber <= 0) || (taskNumber > this.todoList.size())) {
 			// task number is not valid
-			show(String.format(INVALID_TASK_NO_MESSAGE, taskNumber));
+			return show(String.format(INVALID_TASK_NO_MESSAGE, taskNumber));
 		} else {
 			String task = this.todoList.get(taskNumber - 1);
 			this.todoList.remove(taskNumber - 1);
-			show(String.format(DELETE_TASK_MESSAGE, this.TextBuddyFile.getName(), task));
+			try {
+				this.save();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return show(String.format(DELETE_TASK_MESSAGE, this.TextBuddyFile.getName(), task));
 		}
 		
-		try {
-			this.save();
-		} catch (IOException e) {
-			
-		}
 	}
 	
 	/**
 	 * clearTask
 	 * 
 	 * delete everything from the todoList, then save the file
+	 * @return 
 	 */
-	private void clearTask() {
+	private String clearTask() {
 		
 		this.todoList.clear();
-		show(String.format(CLEAR_TASK_MESSAGE, this.TextBuddyFile.getName()));
 		try {
 			this.save();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
+		return show(String.format(CLEAR_TASK_MESSAGE, this.TextBuddyFile.getName()));
+		
 		
 	}
 
@@ -316,31 +329,35 @@ public class TextBuddy {
 	 * displayTask
 	 * 
 	 * display the list of tasks
+	 * @return 
 	 */
-	private void displayTask() {
+	private String displayTask() {
 		if (this.todoList.size() == 0) {
-			show(String.format(EMPTY_FILE_MESSAGE, this.TextBuddyFile.getName()));
+			return show(String.format(EMPTY_FILE_MESSAGE, this.TextBuddyFile.getName()));
 		} else {
 			for (int i = 0; i < this.todoList.size(); i++) {
 				show(i + 1 + ":" + this.todoList.get(i));
 			}
 		}
+		return null;
 	}
 	
 	/**
 	 * exitTextBuddy
 	 * 
 	 * save the file and then exit the program
+	 * @return 
 	 * @throws IOException
 	 */
-	private void exitTextBuddy() throws IOException {
+	private String exitTextBuddy() throws IOException {
 		try {
 			this.save();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		} finally {
 			System.exit(0);
 		}
+		return null;
 	}
 
 	/*
