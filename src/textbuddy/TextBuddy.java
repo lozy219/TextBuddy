@@ -56,7 +56,7 @@ public class TextBuddy {
 
 	// These are the possible command types
 	enum COMMAND_TYPE {
-		ADD_TASK, DISPLAY_TASK, DELETE_TASK, CLEAR_TASK, EXIT, INVALID
+		ADD_TASK, DISPLAY_TASK, DELETE_TASK, CLEAR_TASK, SEARCH_TASK, SORT_TASK, EXIT, INVALID
 	};
 	
 	/**
@@ -219,6 +219,16 @@ public class TextBuddy {
 				returnValue = this.clearTask();
 				break;
 				
+			case SORT_TASK:
+				// TODO: sort
+				// returnValue = this.clearTask();
+				break;
+				
+			case SEARCH_TASK:
+				// TODO: search
+				// returnValue = this.clearTask();
+				break;
+				
 			case EXIT:
 				returnValue = this.exitTextBuddy();
 				break;
@@ -257,6 +267,10 @@ public class TextBuddy {
 		 	return COMMAND_TYPE.DELETE_TASK;
 		} else if (commandTypeString.equalsIgnoreCase("clear")) {
 			return COMMAND_TYPE.CLEAR_TASK;
+		} else if (commandTypeString.equalsIgnoreCase("sort")) {
+			return COMMAND_TYPE.SORT_TASK;
+		} else if (commandTypeString.equalsIgnoreCase("search")) {
+			return COMMAND_TYPE.SEARCH_TASK;
 		} else if (commandTypeString.equalsIgnoreCase("exit")) {
 			return COMMAND_TYPE.EXIT;
 		} else {
