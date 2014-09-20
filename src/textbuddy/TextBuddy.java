@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 /**
  * class TextBuddy
  * 
@@ -52,6 +53,11 @@ public class TextBuddy {
 	private static final String NULL_COMMAND_ERROR = "Command type string cannot be null";
 	private static final String INVALID_FILE_PATH_ERROR = "Invalid file path";
 
+
+	// These are the possible command types
+	enum COMMAND_TYPE {
+		ADD_TASK, DISPLAY_TASK, DELETE_TASK, CLEAR_TASK, EXIT, INVALID
+	};
 	
 	/**
 	 * Constructor for TextBuddy
@@ -176,7 +182,7 @@ public class TextBuddy {
 	 * @return the command
 	 */
 	private String readCommand() {
-		String command = this.scanner.nextLine();
+		String command = TextBuddy.getScanner().nextLine();
 		return command;
 	}
 
@@ -190,32 +196,72 @@ public class TextBuddy {
 	public String processCommand(String command) throws IOException {
 		String commandName = getFirstWord(command);
 		String commandArgument = getRestCommand(command);
-		
-		if (commandName == null) {
-			throw new Error(NULL_COMMAND_ERROR);
-		}
-		
+		COMMAND_TYPE commandType = TextBuddy.determineCommandType(commandName);
+		String returnValue = null;
+	
 		try {
-			if (commandName.equalsIgnoreCase("add")) {
-				return this.addTask(commandArgument);
-			} else if (commandName.equalsIgnoreCase("display")) {
-				return this.displayTask();
-			} else if (commandName.equalsIgnoreCase("delete")) {
+			switch (commandType) {
+			case ADD_TASK:
+				returnValue = this.addTask(commandArgument);			
+				break;
+				
+			case DISPLAY_TASK:
+				returnValue = this.displayTask();
+				break;
+			
+			case DELETE_TASK:
 				// TODO: add confirm before deleting the task
-			 	return this.deleteTask(commandArgument);
-			} else if (commandName.equalsIgnoreCase("clear")) {
+				returnValue = this.deleteTask(commandArgument);
+				break;
+				
+			case CLEAR_TASK:
 				// TODO: add confirm before clearing the file
-				return this.clearTask();
-			} else if (commandName.equalsIgnoreCase("exit")) {
-				return this.exitTextBuddy();
-			} else {
-				return show(String.format(INVALID_COMMAND_ERROR, commandName));
+				returnValue = this.clearTask();
+				break;
+				
+			case EXIT:
+				returnValue = this.exitTextBuddy();
+				break;
+
+			default:
+				returnValue = show(String.format(INVALID_COMMAND_ERROR, commandName));
+				break;
 			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
 		
+		return returnValue;
+	}
+	
+	/**
+	 * determineCommandType 
+	 * 
+	 * 
+	 * this method determines which of the supported command types the user wants to perform
+	 * @param commandTypeString first word of the user command
+	 * @return command type
+	 */
+	private static COMMAND_TYPE determineCommandType(String commandTypeString) {
+		
+		if (commandTypeString == null) {
+			throw new Error(NULL_COMMAND_ERROR);
+		}
+		
+		if (commandTypeString.equalsIgnoreCase("add")) {
+			return COMMAND_TYPE.ADD_TASK;
+		} else if (commandTypeString.equalsIgnoreCase("display")) {
+			return COMMAND_TYPE.DISPLAY_TASK;
+		} else if (commandTypeString.equalsIgnoreCase("delete")) {
+		 	return COMMAND_TYPE.DELETE_TASK;
+		} else if (commandTypeString.equalsIgnoreCase("clear")) {
+			return COMMAND_TYPE.CLEAR_TASK;
+		} else if (commandTypeString.equalsIgnoreCase("exit")) {
+			return COMMAND_TYPE.EXIT;
+		} else {
+			return COMMAND_TYPE.INVALID;
+		}
 	}
 	
 	/**
@@ -392,5 +438,13 @@ public class TextBuddy {
 			// command without argument
 			return null;
 		}
+	}
+
+	public static Scanner getScanner() {
+		return scanner;
+	}
+
+	public static void setScanner(Scanner scanner) {
+		TextBuddy.scanner = scanner;
 	}
 }
